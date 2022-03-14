@@ -1,12 +1,13 @@
 import useBook from '@/components/book/customHooks'
 import BookForm from '@/components/book/form'
 import BookList from '@/components/book/list'
+import { bookSchema } from '@/components/book/schema'
 import AppLayout from '@/components/Layouts/AppLayout'
 import axios from '@/lib/axios'
 import { useFormik } from 'formik'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import { bookSchema } from '@/components/book/schema'
+import * as Yup from 'yup'
 
 const BookPage = () => {
     const formik = useFormik({
@@ -21,7 +22,6 @@ const BookPage = () => {
             // handleSubmit(values, resetForm)
             try {
                 if (values.id) {
-                    console.log(data)
                     handleUpdateBooks(values)
                 } else {
                     handleAddBook(values)

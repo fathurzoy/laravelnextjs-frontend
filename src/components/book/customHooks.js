@@ -6,21 +6,21 @@ const useBook = formik => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        ;async () => {
-            try {
-                setLoading(true)
-                const { data } = await axios.get(
-                    'http://localhost:8000/api/books',
-                )
+    const fetchBooks = async () => {
+        try {
+            setLoading(true)
+            const { data } = await axios.get('http://localhost:8000/api/books')
 
-                setBooks(data.data)
-            } catch (error) {
-                setError(error.message)
-            } finally {
-                setLoading(false)
-            }
+            setBooks(data.data)
+        } catch (error) {
+            setError(error.message)
+        } finally {
+            setLoading(false)
         }
+    }
+
+    useEffect(() => {
+        fetchBooks()
     }, [])
 
     const getBook = async id => {

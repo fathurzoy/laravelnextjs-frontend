@@ -1,7 +1,7 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from '@/lib/axios'
 
-const useBook = (formik) => {
+const useBook = formik => {
     const [books, setBooks] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -41,28 +41,27 @@ const useBook = (formik) => {
         }
     }
 
-    const handleAddBook = (values) => {
-      const { data } = await axios.post(
-        'http://localhost:8000/api/books',
-        values,
-      )
-      const book = data.data
-      setBooks(prev => [...prev, book])
+    const handleAddBook = async values => {
+        const { data } = await axios.post(
+            'http://localhost:8000/api/books',
+            values,
+        )
+        const book = data.data
+        setBooks(prev => [...prev, book])
     }
 
-    const handleUpdateBooks = ({ book }) => {
-      const { data } = await axios.put(
-        `http://localhost:8000/api/books/${values.id}`,
-        values,
-      )
-      const book = data.data
+    const handleUpdateBooks = async values => {
+        const { data } = await axios.put(
+            `http://localhost:8000/api/books/${values.id}`,
+            values,
+        )
+        const book = data.data
 
+        const updateBooks = books.map(item =>
+            item.id === book.id ? book : item,
+        )
 
-      const updateBooks = books.map(item =>
-          item.id === book.id ? book : item,
-      )
-
-      setBooks(updateBooks)
+        setBooks(updateBooks)
     }
 
     const handleDeleteBook = async id => {

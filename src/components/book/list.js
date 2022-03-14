@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../form/button'
 
-const BookList = ({ books = [], getBook }) => {
+const BookList = ({ books = [], getBook, handleDeleteBook }) => {
     const Item = ({ children }) => {
         return (
             <div className="w-full border-gray-200 border-2 px-5 py-5 mb-2 rounded-lg">
@@ -23,7 +23,11 @@ const BookList = ({ books = [], getBook }) => {
                     <Button className="mr-2" onClick={() => getBook(book.id)}>
                         Edit
                     </Button>
-                    <Button variant="danger">Delete</Button>
+                    <Button
+                        variant="danger"
+                        onClick={() => handleDeleteBook(book.id)}>
+                        Delete
+                    </Button>
                 </div>
             </div>
         </Item>

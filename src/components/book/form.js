@@ -1,60 +1,13 @@
+import Button from '@/components/form/button'
 import FormControl from '@/components/form/formControl'
 import Input from '@/components/form/input'
-import Button from '@/components/form/button'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import * as Yup from 'yup'
-
-import axios from '@/lib/axios'
-import { useFormik } from 'formik'
-
-const Form = ({ handleAddBook }) => {
-    const bookSchema = Yup.object().shape({
-        name: Yup.string()
-            .min(4, 'Minimal 4 character!')
-            .max(254, 'Maximum 254 character!')
-            .required('Name is required'),
-        description: Yup.string()
-            .min(10, 'Minimal 10 character!')
-            .max(300, 'Maximal 300 character!')
-            .required('Description is required'),
-        price: Yup.number().required('Price is required'),
-    })
-
-    const formik = useFormik({
-        initialValues: {
-            name: '',
-            description: '',
-            price: 0,
-        },
-        validationSchema: bookSchema,
-        onSubmit: (values, { resetForm }) => {
-            // alert(JSON.stringify(values, null, 2))
-            handleSubmit(values, resetForm)
-        },
-    })
-
-    const handleSubmit = async (values, resetForm) => {
-        try {
-            const { data } = await axios.post(
-                'http://localhost:8000/api/books',
-                values,
-            )
-
-            handleAddBook({
-                book: data.data,
-            })
-
-            resetForm()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+const Form = ({ formik }) => {
     return (
-        <div class="w-full mb-2">
+        <div className="w-full mb-4">
             <form
-                class="w-full shadow-md rounded"
+                className="w-full shadow-md rounded"
                 onSubmit={formik.handleSubmit}>
                 <FormControl label="Name" id="name">
                     <Input
@@ -100,8 +53,10 @@ const Form = ({ handleAddBook }) => {
                         </label>
                     )}
                 </FormControl>
-                <Button type="submit" disabled={!formik.isValid}>
-                    Submit
+                <Button
+                    type="submit"
+                    disabled={!formik.isValid && formik.dirty}>
+                    {formik.values.id ? 'Update' : 'Submit'}
                 </Button>
             </form>
 
